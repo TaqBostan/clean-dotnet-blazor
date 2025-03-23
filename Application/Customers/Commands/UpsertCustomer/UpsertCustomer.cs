@@ -1,4 +1,5 @@
 ﻿using CleanDotnetBlazor.Application.Common.Interfaces;
+using CleanDotnetBlazor.Domain.Entities;
 using CleanDotnetBlazor.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

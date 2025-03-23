@@ -13,6 +13,9 @@ namespace CleanDotnetBlazor.Application
     {
         public static void AddApplicationServices(this IHostApplicationBuilder builder)
         {
+            var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+            builder.Services.AddSingleton(mapperConfig.CreateMapper());
+
             builder.Services.AddMediatR(cfg => {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });

@@ -1,3 +1,4 @@
+using Application;
 using CleanDotnetBlazor.Application.Customers.Commands.CreateCustomer;
 using CleanDotnetBlazor.Application.Customers.Commands.DeleteCustomer;
 using CleanDotnetBlazor.Application.Customers.Queries.GetCustomers;
@@ -27,14 +28,14 @@ namespace CleanDotnetBlazor.Server.Controllers
             return TypedResults.Created($"/{nameof(Customers)}/{id}", id);
         }
 
-        public async Task<Ok<IEnumerable<Customer>>> GetCustomers(ISender sender)
+        public async Task<Ok<IEnumerable<CustomerBriefDto>>> GetCustomers(ISender sender)
         {
             var customers = await sender.Send(new GetCustomersQuery());
 
             return TypedResults.Ok(customers);
         }
 
-        public async Task<Ok<Customer>> GetCustomer(ISender sender, int id)
+        public async Task<Ok<CustomerDto>> GetCustomer(ISender sender, int id)
         {
             var customer = await sender.Send(new GetCustomerQuery(id));
 

@@ -138,11 +138,11 @@ else
 
 
 @code {
-    private List<Customer>? customers;
+    private List<CustomerBriefDto>? customers;
 
     protected override async Task OnInitializedAsync()
     {
-        customers = await Http.GetFromJsonAsync<List<Customer>>("/api/Customers");
+        customers = await Http.GetFromJsonAsync<List<CustomerBriefDto>>("/api/Customers");
     }
 
     protected async Task Delete(int id)

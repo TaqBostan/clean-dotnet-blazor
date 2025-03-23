@@ -1,4 +1,5 @@
-﻿using CleanDotnetBlazor.Shared;
+﻿using CleanDotnetBlazor.Domain.Entities;
+using CleanDotnetBlazor.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
