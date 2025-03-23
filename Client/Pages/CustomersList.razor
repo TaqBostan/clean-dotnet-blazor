@@ -12,7 +12,8 @@
 }
 else
 {
-    <button id="btn-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#customerModal" data-customer-id="0">
+    <Client.Components.Customer @ref="Customer" OnSaved="@load"></Client.Components.Customer>
+    <button id="btn-add" type="button" class="btn btn-primary" @onclick="() => Customer.Open(0)">
         <i class="oi oi-plus"></i>
         Add customer
     </button>
@@ -35,11 +36,7 @@ else
                         <button class="btn btn-outline-primary" @onclick="()=> Delete(customer.Id)">
                             <i class="oi oi-trash"></i>
                         </button>
-                        <button
-                        class="btn btn-outline-primary"
-                        data-toggle="modal"
-                        data-target="#customerModal"
-                        data-customer-id="@customer.Id">
+                        <button class="btn btn-outline-primary" @onclick="() => Customer.Open(customer.Id)">
                             <i class="oi oi-pencil"></i>
                         </button>
                     </td>
@@ -139,8 +136,14 @@ else
 
 @code {
     private List<CustomerBriefDto>? customers;
+    private Components.Customer Customer { get; set; }
 
     protected override async Task OnInitializedAsync()
+    {
+        await load();
+    }
+
+    public async Task load()
     {
         customers = await Http.GetFromJsonAsync<List<CustomerBriefDto>>("/api/Customers");
     }
