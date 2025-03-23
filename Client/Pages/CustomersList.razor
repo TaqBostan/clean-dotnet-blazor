@@ -1,0 +1,154 @@
+﻿@page "/customers-list"
+@using CleanDotnetBlazor.Shared
+@inject HttpClient Http
+
+<PageTitle>Customers</PageTitle>
+
+<h1>Customers</h1>
+
+@if (customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button id="btn-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#customerModal" data-customer-id="0">
+        <i class="oi oi-plus"></i>
+        Add customer
+    </button>
+    <!-- Customer list -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>
+                        <button class="btn btn-outline-primary" @onclick="()=> Delete(customer.Id)">
+                            <i class="oi oi-trash"></i>
+                        </button>
+                        <button
+                        class="btn btn-outline-primary"
+                        data-toggle="modal"
+                        data-target="#customerModal"
+                        data-customer-id="@customer.Id">
+                            <i class="oi oi-pencil"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModalTitle" style="width:100%">Add/Edit customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="id">
+                        <div class="form-group">
+                            <label for="first-name" class="col-form-label">First name:</label>
+                            <input type="text" class="form-control" id="first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name" class="col-form-label">Last name:</label>
+                            <input type="text" class="form-control" id="last-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
+                            <input type="date" class="form-control" id="date-of-birth" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number" class="col-form-label">Phone Number:</label>
+                            <input type="tel" class="form-control" id="phone-number" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="save" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#save').on('click', function() {
+            var modal = $('#customerModal')
+            var id = modal.find('.modal-body #id').val();
+            var firstName = modal.find('.modal-body #first-name').val();
+            var lastName = modal.find('.modal-body #last-name').val();
+            var dateOfBirth = modal.find('.modal-body #date-of-birth').val();
+            var phoneNumber = modal.find('.modal-body #phone-number').val();
+            $.ajax({
+                type: "POST",
+                url: "/api/Customers",
+                async: false,
+                data: JSON.stringify({ id, firstName, lastName, dateOfBirth, phoneNumber }),
+                contentType: "application/json",
+                complete: function (data) {
+                    location.reload();
+                }
+            });
+        });
+
+        $('#customerModal').on('show.bs.modal', function (event) {
+            var modal = $(this)
+            var button = $(event.relatedTarget)
+            var customerId = button.data('customer-id')
+            if(customerId == 0) {
+                modal.find('.modal-body #id').val('0')
+                modal.find('.modal-body #first-name').val('')
+                modal.find('.modal-body #last-name').val('')
+                modal.find('.modal-body #date-of-birth').val('')
+                modal.find('.modal-body #phone-number').val('')
+            }
+            else {
+                $.ajax({
+                    url: '/api/Customers/' + customerId,
+                    success: function (data) {
+                        modal.find('.modal-body #id').val(customerId)
+                        modal.find('.modal-body #first-name').val(data.firstName)
+                        modal.find('.modal-body #last-name').val(data.lastName)
+                        modal.find('.modal-body #date-of-birth').val(data.dateOfBirth)
+                        modal.find('.modal-body #phone-number').val(data.phoneNumber)
+                    },
+                    error: function (error) {
+                        alert("Error: " + error);
+                    }
+                })
+            }
+        })
+    </script>
+}
+
+
+@code {
+    private List<Customer>? customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await Http.GetFromJsonAsync<List<Customer>>("/api/Customers");
+    }
+
+    protected async Task Delete(int id)
+    {
+        await Http.DeleteAsync("/api/Customers/" + id);
+        customers = customers!.Where(customer => customer.Id != id).ToList();
+    }
+
+}
