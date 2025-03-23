@@ -1,14 +1,38 @@
-﻿<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+﻿@using CleanDotnetBlazor.Shared
+@inject HttpClient Http
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" style="width:100%">Add/Edit customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => Close()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <form>
+                    @if (customer != null)
+                    {
+                        <input type="hidden" id="id">
+                        <div class="form-group">
+                            <label for="first-name" class="col-form-label">First name:</label>
+                            <input type="text" class="form-control" id="first-name" required @bind="customer.FirstName" />
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name" class="col-form-label">Last name:</label>
+                            <input type="text" class="form-control" id="last-name" required @bind="customer.LastName" />
+                        </div>
+                        <div class="form-group">
+                            <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
+                            <input type="date" class="form-control" id="date-of-birth" required @bind="customer.DateOfBirth" />
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number" class="col-form-label">Phone Number:</label>
+                            <input type="tel" class="form-control" id="phone-number" required @bind="customer.PhoneNumber" />
+                        </div>
+                    }
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" @onclick="() => Save()">Save changes</button>
@@ -18,7 +42,6 @@
     </div>
 </div>
 
-
 @if (ShowBackdrop)
 {
     <div class="modal-backdrop fade show"></div>
@@ -26,6 +49,7 @@
 
 
 @code {
+    private CustomerDto customer;
 
     [Parameter]
     public EventCallback OnSaved { get; set; }
@@ -34,8 +58,16 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public void Open(int id)
+    public async void Open(int id)
     {
+        if (id != 0) customer = await Http.GetFromJsonAsync<CustomerDto>("/api/Customers/" + id);
+        else customer = new CustomerDto()
+        {
+            FirstName = "",
+            LastName = "",
+            DateOfBirth = DateOnly.FromDateTime(DateTime.Now),
+            PhoneNumber = ""
+        };
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -52,6 +84,7 @@
 
     protected async Task Save()
     {
+        await Http.PostAsJsonAsync("/api/Customers", customer);
         await OnSaved.InvokeAsync();
         Close();
     }
