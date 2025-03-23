@@ -4,7 +4,7 @@ using CleanDotnetBlazor.Infrastructure;
 using CleanDotnetBlazor.Server.Infrastructure;
 using CleanDotnetBlazor.Infrastructure.Data;
 
-namespace CleanDotnetBlazor
+namespace CleanDotnetBlazor.Server
 {
     public class Program
     {

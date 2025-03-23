@@ -1,4 +1,3 @@
-using Application;
 using CleanDotnetBlazor.Application.Customers.Commands.CreateCustomer;
 using CleanDotnetBlazor.Application.Customers.Commands.DeleteCustomer;
 using CleanDotnetBlazor.Application.Customers.Queries.GetCustomers;

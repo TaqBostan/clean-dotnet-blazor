@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanDotnetBlazor.Application
+namespace CleanDotnetBlazor.Application.Common.Mappings
 {
     public class MappingProfile : Profile
     {

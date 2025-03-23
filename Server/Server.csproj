@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>CleanDotnetBlazor.Server</AssemblyName>
+    <RootNamespace>CleanDotnetBlazor.Server</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
