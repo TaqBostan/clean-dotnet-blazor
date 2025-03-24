@@ -12,17 +12,24 @@ services:
     volumes:
       - db:/data/postgres
     ports:
-      - "5332:5432"
-    networks:
-      - db
+      - "5432:5432"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d postgres" ]
       interval: 30s
       timeout: 10s
       retries: 5
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: postgres123
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 volumes:
   db: null
-networks:
-  db:
-    driver: bridge
+  pgadmin-data: null
