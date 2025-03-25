@@ -45,6 +45,7 @@ namespace Client
             }
 
             CurrentEditContext.NotifyValidationStateChanged();
+            messages.Clear();
         }
 
         private class ValidationProblemDetails

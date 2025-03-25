@@ -12,7 +12,7 @@ namespace CleanDotnetBlazor.Application.Customers.Commands.UpsertCustomer
         public UpsertCustomerCommandValidator()
         {
             RuleFor(v => v.FirstName)
-                .MaximumLength(50)
+                .MaximumLength(10)
                 .NotEmpty();
         }
     }

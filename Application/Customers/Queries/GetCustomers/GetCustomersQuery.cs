@@ -19,8 +19,9 @@ namespace CleanDotnetBlazor.Application.Customers.Queries.GetCustomers
         public async Task<IEnumerable<CustomerBriefDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
         {
             return await _context.Customers
-            .ProjectTo<CustomerBriefDto>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+                .OrderBy(c => c.Id)
+                .ProjectTo<CustomerBriefDto>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
         }
     }
 }
