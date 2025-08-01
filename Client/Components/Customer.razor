@@ -62,7 +62,7 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public async void Open(int id)
+    public async Task Open(int id)
     {
         if (id != 0) customer = await Http.GetFromJsonAsync<CustomerDto>("/api/Customers/" + id);
         else customer = new CustomerDto()
@@ -75,7 +75,7 @@
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
-        StateHasChanged();
+        await InvokeAsync(() => StateHasChanged());
     }
 
     public void Close()
