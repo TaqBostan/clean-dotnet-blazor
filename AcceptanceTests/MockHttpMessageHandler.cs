@@ -20,4 +20,9 @@ namespace CleanDotnetBlazor.AcceptanceTests
             return Task.FromResult(_responseMessage);
         }
     }
+
+    public static class Constants
+    {
+        public const string BaseUrl = "https://localhost:7045";
+    }
 }

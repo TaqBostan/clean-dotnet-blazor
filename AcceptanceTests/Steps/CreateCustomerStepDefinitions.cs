@@ -1,4 +1,5 @@
 ﻿using Bunit;
+using CleanDotnetBlazor.Server.Infrastructure;
 using CleanDotnetBlazor.Shared;
 using Client.Components;
 using Microsoft.AspNetCore.Components;
@@ -43,7 +44,7 @@ public sealed class CreateCustomerStepDefinitions
         var mockHandler = new MockHttpMessageHandler(mockResponse);
         var httpClient = new HttpClient(mockHandler)
         {
-            BaseAddress = new Uri("https://localhost:7045")
+            BaseAddress = new Uri(Constants.BaseUrl)
         };
 
         var ctx = new TestContext();
@@ -68,5 +69,44 @@ public sealed class CreateCustomerStepDefinitions
     {
         Assert.AreEqual("none", _component.Instance.ModalDisplay);
         Assert.True(_onSavedCalled, "OnSaved event should be triggered upon successful creation.");
+    }
+
+    [When("the new customer is not valid")]
+    public async Task TheCustomerIsNotValidAsync()
+    {
+        _customer.FirstName = "Mohamad Mehdi";
+        var errors = new Dictionary<string, string[]>() { 
+            { "FirstName", new string[] { "The length of 'First Name' must be 10 characters or fewer. You entered 13 characters." } } 
+        };
+
+        var mockResponse = CustomExceptionHandler.GetHttpResponseMessage(errors);
+        var mockHandler = new MockHttpMessageHandler(mockResponse);
+        var httpClient = new HttpClient(mockHandler)
+        {
+            BaseAddress = new Uri(Constants.BaseUrl)
+        };
+
+        var ctx = new TestContext();
+        ctx.Services.AddSingleton<HttpClient>(httpClient);
+
+        _component = ctx.RenderComponent<Customer>(parameters => parameters
+            .Add(p => p.OnSaved, EventCallback.Factory.Create(this, () => _onSavedCalled = true))
+        );
+
+        await _component.Instance.Open(0);
+
+        _component.Find("#first-name").Change(_customer.FirstName);
+        _component.Find("#last-name").Change(_customer.LastName);
+        _component.Find("#date-of-birth").Change(_customer.DateOfBirth.ToString("yyyy-MM-dd"));
+        _component.Find("#phone-number").Change(_customer.PhoneNumber);
+
+        await _component.Find("form").SubmitAsync();
+    }
+
+    [Then("an error is displayed")]
+    public void AnErrorIsDisplayed()
+    {
+        Assert.AreEqual("block", _component.Instance.ModalDisplay);
+        Assert.False(_onSavedCalled, "OnSaved event should not be triggered due to creation errors.");
     }
 }

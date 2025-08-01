@@ -1,6 +1,9 @@
 ﻿using CleanDotnetBlazor.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Text;
+using System.Text.Json;
 
 namespace CleanDotnetBlazor.Server.Infrastructure;
 
@@ -40,5 +43,22 @@ public class CustomExceptionHandler : IExceptionHandler
         {
             Status = StatusCodes.Status400BadRequest,
         });
+    }
+
+    public static HttpResponseMessage GetHttpResponseMessage(IDictionary<string, string[]> errors)
+    {
+        var details = new ValidationProblemDetails(errors)
+        {
+            Status = StatusCodes.Status400BadRequest,
+        };
+
+        var jsonString = JsonSerializer.Serialize(details);
+
+        return new HttpResponseMessage
+        {
+            StatusCode = HttpStatusCode.BadRequest,
+            Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
+
+        };
     }
 }

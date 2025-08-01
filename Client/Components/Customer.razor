@@ -58,7 +58,7 @@
 
     [Parameter]
     public EventCallback OnSaved { get; set; }
-    public string ModalDisplay = "none;";
+    public string ModalDisplay = "none";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
@@ -72,7 +72,7 @@
             DateOfBirth = DateOnly.FromDateTime(DateTime.Now),
             PhoneNumber = ""
         };
-        ModalDisplay = "block;";
+        ModalDisplay = "block";
         ModalClass = "Show";
         ShowBackdrop = true;
         await InvokeAsync(() => StateHasChanged());
