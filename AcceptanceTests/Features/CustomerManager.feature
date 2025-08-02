@@ -16,3 +16,10 @@ Scenario: An existing customer can be updated when the changes are valid
 	Given an existing customer
 	When the changes on the customer are valid
 	Then the customer is updated successfully
+	
+Scenario: Existing customers can be displayed and deleted
+	Given some customers exist
+	When the customers list component is rendered
+	Then the customers should appear in the table
+	When clicking the delete button for customer A
+	Then customer A should be removed from the table
