@@ -19,26 +19,34 @@
 
                             <input type="hidden" id="id">
                             <div class="form-group">
-                                <label for="first-name" class="col-form-label">First name:</label>
+                                <label for="first-name" class="col-form-label required-label">First name:</label>
                                 <input type="text" class="form-control" id="first-name" required @bind="customer.FirstName" />
                             </div>
                             <div class="form-group">
-                                <label for="last-name" class="col-form-label">Last name:</label>
+                                <label for="last-name" class="col-form-label required-label">Last name:</label>
                                 <input type="text" class="form-control" id="last-name" required @bind="customer.LastName" />
                             </div>
                             <div class="form-group">
-                                <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
+                                <label for="date-of-birth" class="col-form-label required-label">Date of Birth:</label>
                                 <input type="date" class="form-control" id="date-of-birth" required @bind="customer.DateOfBirth" />
                             </div>
                             <div class="form-group">
-                                <label for="phone-number" class="col-form-label">Phone Number:</label>
+                                <label for="phone-number" class="col-form-label required-label">Phone Number:</label>
                                 <input type="tel" class="form-control" id="phone-number" required @bind="customer.PhoneNumber" />
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
-                        </div>
+                            <div class="form-group">
+                                <label for="email" class="col-form-label required-label">Email:</label>
+                                <input type="email" class="form-control" id="email" required @bind="customer.Email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="bank-account-number" class="col-form-label">Bank Account Number:</label>
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="bank-account-number" @bind="customer.BankAccountNumber" />
+                            </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                            </div>
 
                     </EditForm>
                 }
@@ -70,7 +78,9 @@
             FirstName = "",
             LastName = "",
             DateOfBirth = DateOnly.FromDateTime(DateTime.Now),
-            PhoneNumber = ""
+            PhoneNumber = "",
+            Email = "",
+            BankAccountNumber = ""
         };
         ModalDisplay = "block";
         ModalClass = "Show";

@@ -21,8 +21,8 @@ namespace CleanDotnetBlazor.Infrastructure.Data.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     BankAccountNumber = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

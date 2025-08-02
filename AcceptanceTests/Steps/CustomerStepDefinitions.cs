@@ -31,7 +31,8 @@ public sealed class CustomerStepDefinitions
             FirstName = "Mehdi",
             LastName = "Rajaei",
             PhoneNumber = "+989152041565",
-            DateOfBirth = DateOnly.FromDateTime(DateTime.Today)
+            DateOfBirth = DateOnly.FromDateTime(DateTime.Today),
+            Email = "mmehdi_rajaee@yahoo.com"
         };
     }
 
@@ -121,7 +122,8 @@ public sealed class CustomerStepDefinitions
             FirstName = "Mehdi",
             LastName = "Rajaei",
             PhoneNumber = "+989152041565",
-            DateOfBirth = DateOnly.FromDateTime(DateTime.Today).AddMonths(-1)
+            DateOfBirth = DateOnly.FromDateTime(DateTime.Today).AddMonths(-1),
+            Email = "mmehdi_rajaee@yahoo.com"
         };
     }
 

@@ -22,7 +22,7 @@ namespace CleanDotnetBlazor.Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CleanDotnetBlazor.Shared.Customer", b =>
+            modelBuilder.Entity("CleanDotnetBlazor.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,6 +37,7 @@ namespace CleanDotnetBlazor.Infrastructure.Data.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
@@ -47,9 +48,8 @@ namespace CleanDotnetBlazor.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<decimal>("PhoneNumber")
+                        .HasColumnType("numeric(20,0)");
 
                     b.HasKey("Id");
 

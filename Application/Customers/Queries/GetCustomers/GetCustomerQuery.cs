@@ -1,5 +1,6 @@
 ﻿using CleanDotnetBlazor.Application.Common.Interfaces;
 using CleanDotnetBlazor.Shared;
+using System.Numerics;
 
 namespace CleanDotnetBlazor.Application.Customers.Queries.GetCustomers
 {
@@ -18,9 +19,12 @@ namespace CleanDotnetBlazor.Application.Customers.Queries.GetCustomers
 
         public async Task<CustomerDto> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Customers
+            var customer = await _context.Customers
             .ProjectTo<CustomerDto>(_mapper.ConfigurationProvider)
             .FirstAsync(l => l.Id == request.Id, cancellationToken);
+
+            customer.PhoneNumber = "+" + customer.PhoneNumber;
+            return customer;
         }
     }
 }
