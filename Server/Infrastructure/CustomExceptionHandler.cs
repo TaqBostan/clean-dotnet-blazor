@@ -45,7 +45,7 @@ public class CustomExceptionHandler : IExceptionHandler
         });
     }
 
-    public static HttpResponseMessage GetHttpResponseMessage(IDictionary<string, string[]> errors)
+    public static HttpResponseMessage GetBadRequestResponseMessage(IDictionary<string, string[]> errors)
     {
         var details = new ValidationProblemDetails(errors)
         {

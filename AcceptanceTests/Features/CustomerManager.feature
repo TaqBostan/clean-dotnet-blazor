@@ -11,3 +11,8 @@ Scenario: A new customer can not be created when is not valid
 	Given a new customer
 	When the new customer is not valid
 	Then an error is displayed
+	
+Scenario: An existing customer can be updated when the changes are valid
+	Given an existing customer
+	When the changes on the customer are valid
+	Then the customer is updated successfully
